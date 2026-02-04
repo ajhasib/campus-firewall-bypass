@@ -24,9 +24,35 @@ I evaluated standard market solutions before engineering this custom infrastruct
 
 ---
 
-## 💡 The Engineering Solution
-To solve this, I treated the University Network as "Untrusted Transport" only. I engineered a **Hybrid-Cloud Bypass** using:
+1.  **Virtualization:** Hosting the security core (Pi-hole) in a Linux VM inside my daily-driver laptop.
+2.  **Tunneling:** Using **Tailscale (WireGuard Protocol)** to punch a hole through the University's NAT and Client Isolation.
+3.  **Split-Horizon DNS:** Routing *only* DNS requests through the tunnel to minimize latency, while keeping heavy file downloads on the local network.
 
+---
+
+## 🏗️ Architecture Diagram
+
+```mermaid
+graph TD
+    %% Nodes
+    Internet((Internet / Cloud))
+    UniFirewall[University Firewall / NAT]
+    
+    subgraph "Encrypted Overlay Network (Tailscale)"
+        Phone(Mobile Phone)
+        Laptop(Windows Laptop)
+        VM(Linux VM / Pi-hole)
+    end
+
+    %% Connections
+    Phone -- "DNS Query (100.x.x.x)" --> VM
+    Laptop -- "DNS Query (100.x.x.x)" --> VM
+    VM -- "Filter Ads & Trackers" --> UniFirewall
+    UniFirewall -- "Safe Traffic" --> Internet
+    
+    %% Styles
+    style VM fill:#bbf,stroke:#333,stroke-width:2px
+    style UniFirewall fill:#f9f,stroke:#333,stroke-width:2px,stroke-dasharray: 5 5
 1.  **Virtualization:** Hosting the security core (Pi-hole) in a Linux VM inside my daily-driver laptop.
 2.  **Tunneling:** Using **Tailscale (WireGuard Protocol)** to punch a hole through the University's NAT and Client Isolation, allowing my devices to communicate as if they were on a private LAN.
 3.  **Split-Horizon DNS:** Routing *only* DNS requests through the tunnel to minimize latency, while keeping heavy file downloads on the local network.
