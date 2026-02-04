@@ -59,7 +59,7 @@ To solve this, I engineered a **Hybrid-Cloud Bypass** using:
     > **Note:** All connected clients are forced to use the VM's Tailscale IP (`100.x.x.x`) for DNS resolution, overriding local ISP defaults.
 
 ### 3. 🛑 The Engine (Pi-hole FTL)
-* **Blocklists:** Aggregated **100,000+ domains** via StevenBlack & Spam404 lists.
+* **Blocklists:** Aggregated **50,000+ domains** via StevenBlack & Spam404 lists.
 * **Regex Filtering:** Custom filters implemented to target CNAME-cloaked tracking domains.
 
 ---
